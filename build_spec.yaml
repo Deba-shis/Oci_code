@@ -1,0 +1,27 @@
+version: 0.1
+component: build
+timeoutInSeconds: 10000
+shell: bash
+env:
+  variables:
+    # build pipeline
+  
+steps:
+  - type: Command
+    name: "create jar/war using maven"
+    timeoutInSeconds: 40
+    command: |
+      mvn clean install
+      echo "create jar file"
+    onFailure:
+      - type: Command
+        timeoutInSeconds: 40
+        command: |
+          echo "cant create jar file"
+        timeoutInSeconds: 400
+outputArtifacts:
+  - name: spring-boot-2-hello-world
+    type: BINARY
+    location: ${OCI_PRIMARY_SOURCE_DIR}/pom.xml
+
+
